@@ -1,0 +1,15 @@
+[submodule "openvpn-build"]
+	path = openvpn-build
+	url = git@github.com:OperatorFoundation/openvpn-build.git
+[submodule "transports/obfs4/Shapeshifter-obfs4-OpenVPN-Transport-Plugin-C"]
+	path = transports/obfs4/Shapeshifter-obfs4-OpenVPN-Transport-Plugin-C
+	url = git@github.com:OperatorFoundation/Shapeshifter-obfs4-OpenVPN-Transport-Plugin-C.git
+[submodule "transports/obfs4/Shapeshifter-obfs4-OpenVPN-Transport-Plugin-Cgo"]
+	path = transports/obfs4/Shapeshifter-obfs4-OpenVPN-Transport-Plugin-Cgo
+	url = git@github.com:OperatorFoundation/Shapeshifter-obfs4-OpenVPN-Transport-Plugin-Cgo.git
+[submodule "transports/obfs4/Shapeshifter-obfs4-OpenVPN-Transport-Plugin-server-C"]
+	path = transports/obfs4/Shapeshifter-obfs4-OpenVPN-Transport-Plugin-server-C
+	url = git@github.com:OperatorFoundation/Shapeshifter-obfs4-OpenVPN-Transport-Plugin-server-C.git
+[submodule "transports/obfs4/Shapeshifter-obfs4-OpenVPN-Transport-Plugin-server-Cgo"]
+	path = transports/obfs4/Shapeshifter-obfs4-OpenVPN-Transport-Plugin-server-Cgo
+	url = git@github.com:OperatorFoundation/Shapeshifter-obfs4-OpenVPN-Transport-Plugin-server-Cgo.git
