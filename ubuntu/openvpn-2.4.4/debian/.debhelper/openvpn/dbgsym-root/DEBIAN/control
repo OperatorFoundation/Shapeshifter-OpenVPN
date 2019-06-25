@@ -1,0 +1,14 @@
+Package: openvpn-dbgsym
+Package-Type: ddeb
+Source: openvpn
+Version: 2.4.4-2ubuntu1.3
+Auto-Built-Package: debug-symbols
+Architecture: amd64
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Installed-Size: 1205
+Depends: openvpn (= 2.4.4-2ubuntu1.3)
+Section: debug
+Priority: optional
+Description: debug symbols for openvpn
+Build-Ids: 2063d2b624be375555c9a792bd82ed47c1c1e190 b1bc2460a61ac91b8313bccf5091d519099d8344 b8313af0ec840bfe40975f139097e7ed52a4969b
+Original-Maintainer: Bernhard Schmidt <berni@debian.org>

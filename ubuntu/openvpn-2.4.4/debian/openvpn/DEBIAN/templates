@@ -1,0 +1,89 @@
+
+Template: openvpn/create_tun
+Type: boolean
+Default: false
+Description: Create the TUN/TAP device?
+ If you choose this option, the /dev/net/tun device
+ needed by OpenVPN will be created.
+ .
+ You should not choose this option if you're using devfs.
+Description-ca.UTF-8: Crear un dispositiu TUN/TAP?
+ Si tries aquesta opció es crearà el dispositiu /dev/net/tun, que és necessari per a OpenVPN.
+ .
+ No hauries de triar aquesta opció si estàs utilitzant devfs.
+Description-cs.UTF-8: Vytvořit zařízení TUN/TAP?
+ Povolíte-li tuto možnost, vytvoří se zařízení /dev/net/tun, které je nutné pro činnost OpenVPN.
+ .
+ Používáte-li devfs, tuto volbu nepovolujte.
+Description-da.UTF-8: Opret TUN/TAP-enheden?
+ Hvis du vælger denne indstilling, vil enheden /dev/net/tun krævet af OpenVPN blive oprettet.
+ .
+ Du bør ikke vælge denne indstilling, hvis du bruger devfs.
+Description-de.UTF-8: TUN/TAP-Gerät anlegen?
+ Wenn Sie hier zustimmen, wird das von OpenVPN benötigte Gerät /dev/net/tun erzeugt.
+ .
+ Sie sollten nicht zustimmen, wenn Sie Devfs benutzen.
+Description-es.UTF-8: ¿Crear dispositivo TUN/TAP?
+ Si elije esta opción, se creará el dispositivo «/dev/net/tun» requerido por OpenVPN.
+ .
+ No elija esta opción si está utilizando devfs.
+Description-eu.UTF-8: TUN/TAP gailua sortu?
+ Aukera hau hautatzen baduzu OpenVPN-ek behar duen /dev/net/tun gailua sortuko da.
+ .
+ Ez zenuke aukera hau onartu beharko devfs erabiltzen ari bazara.
+Description-fi.UTF-8: Luodaanko TUN/TAP-laite?
+ Jos valitset tämän vaihtoehdon, OpenVPN:n tarvitsema laite /dev/net/tun luodaan.
+ .
+ Tätä vaihtoehtoa ei tulisi valita, jos käytössä on devfs.
+Description-fr.UTF-8: Faut-il créer le périphérique TUN/TAP ?
+ Si vous choississez cette option, le périphérique TUN/TAP /dev/net/tun nécessaire pour OpenVPN sera créé.
+ .
+ Vous ne devriez pas choisir cette option si vous utilisez devfs.
+Description-gl.UTF-8: ¿Crear o dispositivo TUN/TAP?
+ Se escolle esta opción, hase crear o dispositivo /dev/net/tun necesario para OpenVPN.
+ .
+ Non debería escoller esta opción se emprega devfs.
+Description-it.UTF-8: Creare il device TUN/TAP?
+ Se si accetta verrà creato il device /dev/net/tun necessario a OpenVPN.
+ .
+ Se si usa devfs, rifiutare la creazione del device.
+Description-ja.UTF-8: TUN/TAP デバイスを作成しますか?
+ ここで「はい」と答えると、openvpn が必要とする /dev/net/tun デバイスを作成します。
+ .
+ devfs を使っている場合は「いいえ」と答えてください。
+Description-nb.UTF-8: Skal TUN/TAP-enheten opprettes?
+ Hvis du velger dette, så opprettes enheten /dev/net/tun/ som OpenVPN trenger.
+ .
+ Ikke velg dette derson du bruker devfs.
+Description-nl.UTF-8: TUN/TAP-apparaat aanmaken?
+ Als u voor deze optie kiest wordt het door OpenVPN benodigde /dev/net/tun-apparaat aangemaakt.
+ .
+ Kies niet voor deze optie als u gebruik maakt van devfs.
+Description-no.UTF-8: Skal TUN/TAP-enheten opprettes?
+ Hvis du velger dette, så opprettes enheten /dev/net/tun/ som OpenVPN trenger.
+ .
+ Ikke velg dette derson du bruker devfs.
+Description-pt.UTF-8: Criar o dispositivo TUN/TAP?
+ Se escolher esta opção, será criado o dispositivo /dev/net/tun preciso pelo OpvnVPN.
+ .
+ Não deverá escolher esta opção se estiver a usar devfs.
+Description-pt_BR.UTF-8: Criar o dispositivo TUN/TAP?
+ Se você escolher esta opção, o dispositivo /dev/net/tun necessário ao openvpn será criado.
+ .
+ Você não deve escolher esta opção se você está usando devfs.
+Description-ru.UTF-8: Создать устройство TUN/TAP?
+ При выборе этой опции, будет создано устройство /dev/net/tun, необходимое для OpenVPN.
+ .
+ Вам не следует выбирать эту опцию при использовании devfs.
+Description-sv.UTF-8: Skapa TUN/TAP-gränssnittet?
+ Om du väljer detta alternativ kommer specialfilen /dev/net/tun som behövs av OpenVPN att skapas.
+ .
+ Du skall ej välja detta alternativ om du använder devfs.
+Description-tr.UTF-8: TUN/TAP aygıtı oluşturulsun mu?
+ Bu seçeneği seçtiğiniz takdirde OpenVPN'in gereksinim duyduğu /dev/net/tun aygıtı oluşturulacak.
+ .
+ devfs kullanıyorsanız bu seçeneği seçmeyin.
+Description-vi.UTF-8: Tạo thiết bị TUN/TAP không?
+ Bật tùy chọn này thì tạo thiết bị « /dev/net/tun » được OpenVPN cần.
+ .
+ Không nên bật tùy chọn này nếu bạn đang dùng devfs.
