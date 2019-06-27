@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 export BASE=github.com/OperatorFoundation
 export SSPATH=Shapeshifter-obfs4-OpenVPN-Transport-Plugin-server
 export CPATH=$SSPATH-C
