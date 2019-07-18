@@ -10,6 +10,7 @@ mkdir go
 cd go
 go get $BASE/$CGOPATH
 cd src/$BASE/$CGOPATH
+./build.sh
 popd
 
 cp ~/go/src/$BASE/$CGOPATH/$CGOPATH.h transports/obfs4/$CPATH/include/shapeshifter-obfs4-server-go.h
@@ -19,3 +20,4 @@ cd transports/obfs4/$CPATH
 cmake .
 make
 
+cpack -v -G DEB

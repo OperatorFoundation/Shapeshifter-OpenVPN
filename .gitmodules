@@ -13,3 +13,7 @@
 [submodule "transports/obfs4/Shapeshifter-obfs4-OpenVPN-Transport-Plugin-server-Cgo"]
 	path = transports/obfs4/shapeshifter-obfs4-server-go
 	url = git@github.com:OperatorFoundation/Shapeshifter-obfs4-OpenVPN-Transport-Plugin-server-Cgo.git
+[submodule "ubuntu/openvpn"]
+	path = ubuntu/openvpn
+	url = git@github.com:OperatorFoundation/openvpn.git
+	branch = transport-api
