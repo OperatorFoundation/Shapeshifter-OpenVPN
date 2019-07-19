@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 export BASE=github.com/OperatorFoundation
 export SSPATH=Shapeshifter-obfs4-OpenVPN-Transport-Plugin-server
-export CPATH=$SSPATH-C
+export CPATH=shapeshifter-obfs4-server-1.0
 export CGOPATH=$SSPATH-Cgo
 
 pushd .
 cd
-mkdir go
+mkdir -p go
 cd go
 go get $BASE/$CGOPATH
 cd src/$BASE/$CGOPATH
