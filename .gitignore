@@ -50,3 +50,6 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+transports/obfs4/shapeshifter-obfs4-server-1.0/_CPack_Packages/
+transports/obfs4/shapeshifter-obfs4-server-1.0/install_manifest.txt
