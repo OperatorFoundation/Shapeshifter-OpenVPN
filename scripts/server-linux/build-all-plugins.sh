@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-./build-plugin.sh obfs4
-./build-plugin.sh shadow
+./scripts/server-linux/build-plugin.sh obfs4
+./scripts/server-linux/build-plugin.sh shadow
