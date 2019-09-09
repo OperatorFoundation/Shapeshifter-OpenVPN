@@ -8,7 +8,7 @@ import (
 	obfs4transport "github.com/OperatorFoundation/shapeshifter-transports/transports/obfs4"
 )
 
-var transports = map[int]obfs4transport.Obfs4Transport{}
+var transports = map[int]*obfs4transport.Obfs4Transport{}
 var listeners = map[int]net.Listener{}
 var conns = map[int]net.Conn{}
 var nextID = 0
