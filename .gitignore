@@ -63,4 +63,12 @@ plugins/shadow/server-linux/shapeshifter-shadow-server-1.0/install_manifest.txt
 plugins/shadow/server-linux/shapeshifter-shadow-server-1.0/Makefile
 plugins/shadow/server-linux/shapeshifter-shadow-server-1.0/shapeshifter-shadow-server-1.0.0-amd64.deb
 
+plugins/obfs4/server-linux/shapeshifter-obfs4-server-1.0/CMakeCache.txt
+plugins/obfs4/server-linux/shapeshifter-obfs4-server-1.0/CMakeFiles
+plugins/obfs4/server-linux/shapeshifter-obfs4-server-1.0/cmake_install.cmake
+plugins/obfs4/server-linux/shapeshifter-obfs4-server-1.0/_CPack_Packages
+plugins/obfs4/server-linux/shapeshifter-obfs4-server-1.0/install_manifest.txt
+plugins/obfs4/server-linux/shapeshifter-obfs4-server-1.0/Makefile
+plugins/obfs4/server-linux/shapeshifter-obfs4-server-1.0/shapeshifter-obfs4-server-1.0.0-amd64.deb
+
 
