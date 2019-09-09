@@ -9,12 +9,12 @@ include_directories(src)
 add_library(shapeshifter-obfs4-server SHARED
         include/openvpn/openvpn-plugin.h
         include/openvpn/openvpn-vsocket.h
-        include/shapeshifter-obfs4-server-go.h
+        include/shapeshifter-obfs4-go.h
         src/shapeshifter-obfs4-posix.c
         src/shapeshifter-obfs4.c
         src/shapeshifter-obfs4.h)
 
-find_library(CGOLIB NAMES shapeshifter-obfs4-server-go.a shapeshifter-obfs4-server-go HINTS /root/Shapeshifter-OpenVPN/transports/obfs4/shapeshifter-obfs4-server-1.0/lib)
+find_library(CGOLIB NAMES shapeshifter-obfs4-go.a shapeshifter-obfs4-go HINTS lib)
 target_link_libraries(shapeshifter-obfs4-server ${CGOLIB})
 
 install(TARGETS shapeshifter-obfs4-server LIBRARY DESTINATION lib)
