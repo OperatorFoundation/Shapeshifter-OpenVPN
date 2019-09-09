@@ -54,3 +54,13 @@ dkms.conf
 transports/obfs4/shapeshifter-obfs4-server-1.0/_CPack_Packages/
 transports/obfs4/shapeshifter-obfs4-server-1.0/install_manifest.txt
 transports/obfs4/shapeshifter-obfs4-server-1.0/*.deb
+
+plugins/shadow/server-linux/shapeshifter-shadow-server-1.0/CMakeCache.txt
+plugins/shadow/server-linux/shapeshifter-shadow-server-1.0/CMakeFiles
+plugins/shadow/server-linux/shapeshifter-shadow-server-1.0/cmake_install.cmake
+plugins/shadow/server-linux/shapeshifter-shadow-server-1.0/_CPack_Packages
+plugins/shadow/server-linux/shapeshifter-shadow-server-1.0/install_manifest.txt
+plugins/shadow/server-linux/shapeshifter-shadow-server-1.0/Makefile
+plugins/shadow/server-linux/shapeshifter-shadow-server-1.0/shapeshifter-shadow-server-1.0.0-amd64.deb
+
+
