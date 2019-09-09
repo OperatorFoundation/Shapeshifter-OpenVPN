@@ -2,5 +2,14 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/openvpn-build" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/plugins/obfs4/client-windows" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/plugins/shadow/client-windows" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/transports/obfs4/Shapeshifter-obfs4-OpenVPN-Transport-Plugin-C" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/transports/obfs4/Shapeshifter-obfs4-OpenVPN-Transport-Plugin-Cgo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/transports/obfs4/Shapeshifter-obfs4-OpenVPN-Transport-Plugin-server-C" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/transports/obfs4/Shapeshifter-obfs4-OpenVPN-Transport-Plugin-server-Cgo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/transports/obfs4/shapeshifter-obfs4" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/transports/obfs4/shapeshifter-obfs4-server" vcs="Git" />
   </component>
 </project>
