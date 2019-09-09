@@ -13,7 +13,7 @@ var listeners = map[int]net.Listener{}
 var conns = map[int]net.Conn{}
 var nextID = 0
 
-//export Obfs4_initialize_server
+//export Obfs4InitializeServer
 func Obfs4InitializeServer(stateDir *C.char) (listenerKey int) {
 	goStateString := C.GoString(stateDir)
 	transports[nextID] = obfs4transport.NewObfs4Server(goStateString)
@@ -25,7 +25,7 @@ func Obfs4InitializeServer(stateDir *C.char) (listenerKey int) {
 	return
 }
 
-//export Obfs4_listen
+//export Obfs4Listen
 func Obfs4Listen(id int, addressString *C.char) {
 	goAddressString := C.GoString(addressString)
 
@@ -34,7 +34,7 @@ func Obfs4Listen(id int, addressString *C.char) {
 	listeners[id] = listener
 }
 
-//export Obfs4_accept
+//export Obfs4Accept
 func Obfs4Accept(id int) {
 	var listener = listeners[id]
 
@@ -46,7 +46,7 @@ func Obfs4Accept(id int) {
 	conns[id] = conn
 }
 
-//export Obfs4_write
+//export Obfs4Write
 func Obfs4Write(listenerId int, buffer unsafe.Pointer, bufferLength C.int) int {
 	var connection = conns[listenerId]
 	var bytesBuffer = C.GoBytes(buffer, bufferLength)
@@ -59,7 +59,7 @@ func Obfs4Write(listenerId int, buffer unsafe.Pointer, bufferLength C.int) int {
 	}
 }
 
-//export Obfs4_read
+//export Obfs4Read
 func Obfs4Read(listenerId int, buffer unsafe.Pointer, bufferLength C.int) int {
 
 	var connection = conns[listenerId]
@@ -74,7 +74,7 @@ func Obfs4Read(listenerId int, buffer unsafe.Pointer, bufferLength C.int) int {
 	}
 }
 
-//export Obfs4_close_connection
+//export Obfs4CloseConnection
 func Obfs4CloseConnection(listenerId int) {
 
 	var connection = conns[listenerId]
