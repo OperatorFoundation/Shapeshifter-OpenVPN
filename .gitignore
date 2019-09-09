@@ -72,3 +72,8 @@ plugins/obfs4/server-linux/shapeshifter-obfs4-server-1.0/Makefile
 plugins/obfs4/server-linux/shapeshifter-obfs4-server-1.0/shapeshifter-obfs4-server-1.0.0-amd64.deb
 
 
+go-build
+.idea
+go/.idea
+.DS_Store
+plugins/obfs4/server-linux/shapeshifter-obfs4-server-1.0/include/shapeshifter-obfs4-go.h
