@@ -11,7 +11,5 @@ add_library(shapeshifter_plugin_obfs4 SHARED
         src/shapeshifter-obfs4.c)
 
 find_library(CGOLIB NAMES shapeshifter-obfs4-go.lib shapeshifter-obfs4-go HINTS lib)
-find_library(WINSOCK NAMES wsock32)
-find_library(WINSOCK2 NAMES ws2_32)
 
 target_link_libraries(shapeshifter_plugin_obfs4 ${CGOLIB} wsock32 ws2_32 Winmm)

@@ -7,13 +7,9 @@ include_directories(include)
 include_directories(src)
 
 add_library(shapeshifter_plugin_shadow SHARED
-        include/openvpn/openvpn-plugin.h
-        include/openvpn/openvpn-vsocket.h
-        include/shapeshifter-shadow-go.h
         src/shapeshifter-shadow-win32.c
-        src/shapeshifter-shadow.c
-        src/shapeshifter-shadow.h)
+        src/shapeshifter-shadow.c)
 
-find_library(CGOLIB shapeshifter-shadow-go HINTS C:/Users/GCR/CLionProjects/Shapeshifter-OpenVPN/plugins/shadow/client-windows/lib/shapeshifter-shadow-go.a)
+find_library(CGOLIB NAMES shapeshifter-shadow-go.lib shapeshifter-shadow-go HINTS lib)
 
-target_link_libraries(shapeshifter_plugin_shadow wsock32 ws2_32 ${CGOLIB})
+target_link_libraries(shapeshifter_plugin_shadow ${CGOLIB} wsock32 ws2_32 Winmm)

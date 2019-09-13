@@ -61,7 +61,7 @@ static openvpn_vsocket_handle_t shapeshifter_shadow_win32_bind(void *plugin_hand
     sock->ctx = (struct shapeshifter_shadow_context *) plugin_handle;
 
     // Create an shadow client.
-    sock->client_id = InitializeShadowClient(sock->ctx->password, sock->ctx->cipherName);
+    sock->client_id = ShadowInitializeClient(sock->ctx->password, sock->ctx->cipherName);
 
     /* See above: write is ready when idle, read is not-ready when idle. */
     sock->completion_events.read = CreateEvent(NULL, TRUE, FALSE, NULL);
@@ -147,7 +147,7 @@ static ssize_t shapeshifter_shadow_win32_sendto(openvpn_vsocket_handle_t handle,
 {
     struct shapeshifter_shadow_socket_win32 *sock = (struct shapeshifter_shadow_socket_win32 *)handle;
     GoInt client_id = sock->client_id;
-    GoInt number_of_characters_sent = ShadoWrite(client_id, (void *)buf, (int)len);
+    GoInt number_of_characters_sent = ShadowWrite(client_id, (void *)buf, (int)len);
 
     if (number_of_characters_sent < 0)
     {
