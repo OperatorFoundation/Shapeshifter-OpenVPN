@@ -1,10 +1,5 @@
-#pragma once
 #define _WINSOCKAPI_    // stops windows.h including winsock.h
 
-#include "shapeshifter-obfs4.h"
-#include "Shapeshifter-obfs4-go.h"
-#include "openvpn/openvpn-vsocket.h"
-#include "openvpn/openvpn-plugin.h"
 #include <stdbool.h>
 #include <string.h>
 #include <stdio.h>
@@ -14,6 +9,11 @@
 #include <windows.h>
 
 #include <assert.h>
+
+#include "openvpn/openvpn-vsocket.h"
+#include "openvpn/openvpn-plugin.h"
+#include "Shapeshifter-obfs4-go.h"
+#include "shapeshifter-obfs4.h"
 
 static inline bool is_invalid_handle(HANDLE h)
 {
@@ -65,7 +65,7 @@ static openvpn_vsocket_handle_t shapeshifter_obfs4_win32_bind(void *plugin_handl
     sock->ctx = (struct shapeshifter_obfs4_context *) plugin_handle;
 
     // Create an obfs4 client.
-    sock->client_id = Initialize_obfs4_c_client(sock->ctx->cert_string, sock->ctx->iat_mode);
+    sock->client_id = InitializeObfs4CClient(sock->ctx->cert_string, sock->ctx->iat_mode);
 
     /* See above: write is ready when idle, read is not-ready when idle. */
     sock->completion_events.read = CreateEvent(NULL, TRUE, FALSE, NULL);

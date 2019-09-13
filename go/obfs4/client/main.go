@@ -29,10 +29,10 @@ func Obfs4Dial(clientId int, addressString *C.char) int {
 
 	goAddressString := C.GoString(addressString)
 
-	var transport = obfs4Clients[clientId]
-	var obfs4TransportConnection = transport.Dial(goAddressString)
+	transport := obfs4Clients[clientId]
+	obfs4TransportConnection, err := transport.Dial(goAddressString)
 
-	if obfs4TransportConnection == nil {
+	if err != nil {
 		return 1
 	} else {
 		obfs4Connections[clientId] = obfs4TransportConnection

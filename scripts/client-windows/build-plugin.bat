@@ -4,14 +4,14 @@ SET WINBASE=github.com\OperatorFoundation\Shapeshifter-OpenVPN
 
 mkdir %GOPATH%
 pushd %GOPATH%
-go get -u %BASE%/go/%1
+go get -u %BASE%/go/%1/client
 popd
-pushd %GOPATH%\src\%WINBASE%\go\%1
+pushd %GOPATH%\src\%WINBASE%\go\%1\client
 go build -o %1.lib -buildmode=c-archive
 popd
 
-copy "%GOPATH%\src\%WINBASE%\go\%1\%1.h" "plugins\%1\client-windows\include\shapeshifter-%1-go.h"
-copy "%GOPATH%\src\%WINBASE%\go\%1\%1.lib" "plugins\%1\client-windows\lib\shapeshifter-%1-go.lib"
+copy "%GOPATH%\src\%WINBASE%\go\client\%1\%1.h" "plugins\%1\client-windows\include\shapeshifter-%1-go.h"
+copy "%GOPATH%\src\%WINBASE%\go\client\%1\%1.lib" "plugins\%1\client-windows\lib\shapeshifter-%1-go.lib"
 
 cd "plugins\%1\client-windows"
 
