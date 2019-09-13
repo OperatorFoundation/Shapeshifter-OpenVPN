@@ -33,7 +33,7 @@ func ShadowInitializeClient(password *C.char, cipherName *C.char) (clientKey int
 }
 
 //export ShadowDial
-func ShadowDial(id int, addressString *C.char) {
+func ShadowDial(id int, addressString *C.char) int {
 	goAddressString := C.GoString(addressString)
 	config := configs[id]
 
