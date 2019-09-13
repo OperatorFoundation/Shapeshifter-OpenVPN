@@ -1,4 +1,4 @@
-SET GOROOT=%CD%/go-build
+SET GOROOT=%CD%\go-build
 SET BASE=github.com/OperatorFoundation/Shapeshifter-OpenVPN
 SET WINBASE=github.com\OperatorFoundation\Shapeshifter-OpenVPN
 
