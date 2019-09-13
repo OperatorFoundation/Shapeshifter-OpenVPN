@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 SET GOPATH=%CD%\go-build
-=======
-SET GOROOT=%CD%\go-build
->>>>>>> 7f2c1cd18105b6ea56bbb6420d561514785f52a6
 SET BASE=github.com/OperatorFoundation/Shapeshifter-OpenVPN
 SET WINBASE=github.com\OperatorFoundation\Shapeshifter-OpenVPN
 
