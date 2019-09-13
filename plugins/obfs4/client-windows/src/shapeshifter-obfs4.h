@@ -1,8 +1,8 @@
 #ifndef OPENVPN_PLUGIN_shapeshifter_obfs4_H
 #define OPENVPN_PLUGIN_shapeshifter_obfs4_H 1
 
-#include "openvpn-plugin.h"
-#include "openvpn-vsocket.h"
+#include "openvpn/openvpn-plugin.h"
+#include "openvpn/openvpn-vsocket.h"
 
 #define shapeshifter_obfs4_PLUGIN_NAME "shapeshifter-obfs4"
 
