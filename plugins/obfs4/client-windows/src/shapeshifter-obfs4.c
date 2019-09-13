@@ -1,11 +1,7 @@
-#define _WINSOCKAPI_    // stops windows.h including winsock.h
-
 #include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-#include "openvpn-plugin.h"
-#include "openvpn-vsocket.h"
-#include "Shapeshifter-obfs4-OpenVPN-Transport-Plugin.h"
+#include "openvpn/openvpn-plugin.h"
+#include "openvpn/openvpn-vsocket.h"
+#include "shapeshifter-obfs4-go.h"
 #include "shapeshifter-obfs4.h"
 
 struct openvpn_vsocket_vtab shapeshifter_obfs4_socket_vtab = { NULL };

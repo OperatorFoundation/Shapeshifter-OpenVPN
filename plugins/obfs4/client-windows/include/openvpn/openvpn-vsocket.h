@@ -8,6 +8,7 @@
 /* Win32 */
 #define OPENVPN_VSOCKET_PLATFORM_WIN32
 #include <stdbool.h>
+#include <stdio.h>
 #include <windows.h>
 #include <winsock2.h>
 
