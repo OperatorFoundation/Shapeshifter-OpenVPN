@@ -9,7 +9,6 @@ import (
 )
 
 var configs = map[int]shadowConfig{}
-var listeners = map[int]net.Listener{}
 var conns = map[int]net.Conn{}
 var nextID = 0
 
@@ -19,7 +18,7 @@ type shadowConfig struct {
 }
 
 //export ShadowInitializeServer
-func ShadowInitializeServer(password *C.char, cipherName *C.char) (listenerKey int) {
+func ShadowInitializeClient(password *C.char, cipherName *C.char) (listenerKey int) {
 	goPassword := C.GoString(password)
 	goCipherName := C.GoString(cipherName)
 
@@ -33,26 +32,21 @@ func ShadowInitializeServer(password *C.char, cipherName *C.char) (listenerKey i
 	return
 }
 
-//export ShadowListen
-func ShadowListen(id int, addressString *C.char) {
+//export ShadowDial
+func ShadowDial(id int, addressString *C.char) {
 	goAddressString := C.GoString(addressString)
 	config := configs[id]
 
-	transport := shadow.NewShadowServer(config.password, config.cipherName)
-	listener := transport.Listen(goAddressString)
-	listeners[id] = listener
-}
+	transport := shadow.NewShadowClient(config.password, config.cipherName)
+	conn, err := transport.Dial(goAddressString)
 
-//export ShadowAccept
-func ShadowAccept(id int) {
-	var listener = listeners[id]
 
-	conn, err := listener.Accept()
 	if err != nil {
-		return
+		return 1
+	} else {
+		conns[id] = conn
+		return 0
 	}
-
-	conns[id] = conn
 }
 
 //export ShadowWrite
