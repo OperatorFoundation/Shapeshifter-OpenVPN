@@ -17,7 +17,7 @@ type shadowConfig struct {
 	cipherName string
 }
 
-//export ShadowInitializeServer
+//export ShadowInitializeClient
 func ShadowInitializeClient(password *C.char, cipherName *C.char) (clientKey int) {
 	goPassword := C.GoString(password)
 	goCipherName := C.GoString(cipherName)
