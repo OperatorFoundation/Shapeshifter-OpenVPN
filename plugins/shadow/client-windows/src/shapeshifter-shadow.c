@@ -1,10 +1,6 @@
-#define _WINSOCKAPI_    // stops windows.h including winsock.h
-
 #include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-#include "openvpn-plugin.h"
-#include "openvpn-vsocket.h"
+#include "openvpn/openvpn-plugin.h"
+#include "openvpn/openvpn-vsocket.h"
 #include "shapeshifter-shadow-go.h"
 #include "shapeshifter-shadow.h"
 
@@ -33,8 +29,8 @@ OPENVPN_EXPORT int openvpn_plugin_open_v3(int version, struct openvpn_plugin_arg
 {
     struct shapeshifter_shadow_context *context;
     context = (struct shapeshifter_shadow_context *) calloc(1, sizeof(struct shapeshifter_shadow_context));
-    context->cert_string = (char *)args->argv[1];
-    context->iat_mode = atoi(args->argv[2]);
+    context->password = (char *)args->argv[1];
+    context->cipherName = (char *)args->argv[2];
     
     if (!context)
         return OPENVPN_PLUGIN_FUNC_ERROR;

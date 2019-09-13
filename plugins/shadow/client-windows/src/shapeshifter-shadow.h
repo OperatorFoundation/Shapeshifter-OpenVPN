@@ -1,8 +1,8 @@
 #ifndef OPENVPN_PLUGIN_shapeshifter_shadow_H
 #define OPENVPN_PLUGIN_shapeshifter_shadow_H 1
 
-#include "openvpn-plugin.h"
-#include "openvpn-vsocket.h"
+#include "openvpn/openvpn-plugin.h"
+#include "openvpn/openvpn-vsocket.h"
 
 #define shapeshifter_shadow_PLUGIN_NAME "shapeshifter-shadow"
 

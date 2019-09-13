@@ -69,12 +69,12 @@ func Obfs4Read(clientId int, buffer unsafe.Pointer, bufferLength C.int) int {
 }
 
 //export Obfs4CloseConnection
-func Obfs4CloseConnection(client_id int) {
+func Obfs4CloseConnection(clientId int) {
 
-	var connection = obfs4Connections[client_id]
+	var connection = obfs4Connections[clientId]
 	_ = connection.Close()
-	delete(obfs4Connections, client_id)
-	delete(obfs4Clients, client_id)
+	delete(obfs4Connections, clientId)
+	delete(obfs4Clients, clientId)
 }
 
 func main() {}

@@ -18,7 +18,7 @@ type shadowConfig struct {
 }
 
 //export ShadowInitializeServer
-func ShadowInitializeClient(password *C.char, cipherName *C.char) (listenerKey int) {
+func ShadowInitializeClient(password *C.char, cipherName *C.char) (clientKey int) {
 	goPassword := C.GoString(password)
 	goCipherName := C.GoString(cipherName)
 
@@ -26,7 +26,7 @@ func ShadowInitializeClient(password *C.char, cipherName *C.char) (listenerKey i
 	configs[nextID] = config
 
 	// This is the return value
-	listenerKey = nextID
+	clientKey = nextID
 
 	nextID += 1
 	return
@@ -50,8 +50,8 @@ func ShadowDial(id int, addressString *C.char) {
 }
 
 //export ShadowWrite
-func ShadowWrite(listenerId int, buffer unsafe.Pointer, bufferLength C.int) int {
-	var connection = conns[listenerId]
+func ShadowWrite(clientId int, buffer unsafe.Pointer, bufferLength C.int) int {
+	var connection = conns[clientId]
 	var bytesBuffer = C.GoBytes(buffer, bufferLength)
 	numberOfBytesWritten, err := connection.Write(bytesBuffer)
 
@@ -63,9 +63,9 @@ func ShadowWrite(listenerId int, buffer unsafe.Pointer, bufferLength C.int) int 
 }
 
 //export ShadowRead
-func ShadowRead(listenerId int, buffer unsafe.Pointer, bufferLength C.int) int {
+func ShadowRead(clientId int, buffer unsafe.Pointer, bufferLength C.int) int {
 
-	var connection = conns[listenerId]
+	var connection = conns[clientId]
 	var bytesBuffer = C.GoBytes(buffer, bufferLength)
 
 	numberOfBytesRead, err := connection.Read(bytesBuffer)
@@ -78,11 +78,11 @@ func ShadowRead(listenerId int, buffer unsafe.Pointer, bufferLength C.int) int {
 }
 
 //export ShadowCloseConnection
-func ShadowCloseConnection(listenerId int) {
+func ShadowCloseConnection(clientId int) {
 
-	var connection = conns[listenerId]
+	var connection = conns[clientId]
 	_ = connection.Close()
-	delete(conns, listenerId)
+	delete(conns, clientId)
 }
 
 func main() {}

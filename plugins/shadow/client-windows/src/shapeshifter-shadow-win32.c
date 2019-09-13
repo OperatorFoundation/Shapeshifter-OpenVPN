@@ -1,19 +1,15 @@
-#pragma once
-#define _WINSOCKAPI_    // stops windows.h including winsock.h
-
-#include "shapeshifter-shadow.h"
-#include "shapeshifter-shadow-go.h"
-#include "openvpn-vsocket.h"
-#include "openvpn-plugin.h"
 #include <stdbool.h>
-#include <string.h>
 #include <stdio.h>
-#include <stdarg.h>
 
 #include <winsock2.h>
 #include <windows.h>
 
 #include <assert.h>
+
+#include "openvpn/openvpn-vsocket.h"
+#include "openvpn/openvpn-plugin.h"
+#include "shapeshifter-shadow-go.h"
+#include "shapeshifter-shadow.h"
 
 static inline bool is_invalid_handle(HANDLE h)
 {
@@ -48,7 +44,7 @@ static void free_socket(struct shapeshifter_shadow_socket_win32 *sock)
         CloseHandle(sock->completion_events.write);
     }
 
-    Obfs4_close_connection(sock->client_id);
+    ShadowCloseConnection(sock->client_id);
 
     free(sock);
 }
@@ -65,7 +61,7 @@ static openvpn_vsocket_handle_t shapeshifter_shadow_win32_bind(void *plugin_hand
     sock->ctx = (struct shapeshifter_shadow_context *) plugin_handle;
 
     // Create an shadow client.
-    sock->client_id = Initialize_shadow_c_client(sock->ctx->cert_string, sock->ctx->iat_mode);
+    sock->client_id = InitializeShadowClient(sock->ctx->password, sock->ctx->cipherName);
 
     /* See above: write is ready when idle, read is not-ready when idle. */
     sock->completion_events.read = CreateEvent(NULL, TRUE, FALSE, NULL);
@@ -75,7 +71,7 @@ static openvpn_vsocket_handle_t shapeshifter_shadow_win32_bind(void *plugin_hand
         goto error;
 
     struct sockaddr_in *addr_in = (struct sockaddr_in *)addr;
-    GoInt dial_result = Obfs4_dial(sock->client_id, inet_ntoa(addr_in->sin_addr));
+    GoInt dial_result = ShadowDial(sock->client_id, inet_ntoa(addr_in->sin_addr));
 
     if (dial_result != 0)
         goto error;
@@ -135,7 +131,7 @@ static ssize_t shapeshifter_shadow_win32_recvfrom(openvpn_vsocket_handle_t handl
 {
     struct shapeshifter_shadow_socket_win32 *sock = (struct shapeshifter_shadow_socket_win32 *)handle;
     GoInt client_id = sock->client_id;
-    GoInt number_of_bytes_read = Obfs4_read(client_id, (void *)buf, (int)len);
+    GoInt number_of_bytes_read = ShadowRead(client_id, (void *)buf, (int)len);
 
     if (number_of_bytes_read < 0)
     {
@@ -151,7 +147,7 @@ static ssize_t shapeshifter_shadow_win32_sendto(openvpn_vsocket_handle_t handle,
 {
     struct shapeshifter_shadow_socket_win32 *sock = (struct shapeshifter_shadow_socket_win32 *)handle;
     GoInt client_id = sock->client_id;
-    GoInt number_of_characters_sent = Obfs4_write(client_id, (void *)buf, (int)len);
+    GoInt number_of_characters_sent = ShadoWrite(client_id, (void *)buf, (int)len);
 
     if (number_of_characters_sent < 0)
     {
