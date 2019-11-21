@@ -4,6 +4,7 @@ import (
 	"github.com/OperatorFoundation/shapeshifter-transports/transports/obfs4"
 	"net"
 	"unsafe"
+	"golang.org/x/net/proxy"
 )
 
 var obfs4Clients = map[int]*obfs4.Obfs4Transport{}
@@ -14,7 +15,7 @@ var nextID = 0
 func InitializeObfs4CClient(certString *C.char, iatMode int) (clientKey int) {
 
 	goCertString := C.GoString(certString)
-	var obfs4Client *obfs4.Obfs4Transport = obfs4.NewObfs4Client(goCertString, iatMode)
+	var obfs4Client *obfs4.Obfs4Transport = obfs4.NewObfs4Client(goCertString, iatMode, proxy.Direct)
 	obfs4Clients[nextID] = obfs4Client
 
 	// This is the return value
