@@ -2,6 +2,7 @@ package main
 
 import "C"
 import (
+	"golang.org/x/net/proxy"
 	"net"
 	"unsafe"
 
@@ -9,10 +10,10 @@ import (
 )
 
 var configs = map[int]shadowConfig{}
-var conns = map[int]net.Conn{}
-var nextID = 0
+	var conns = map[int]net.Conn{}
+	var nextID = 0
 
-type shadowConfig struct {
+	type shadowConfig struct {
 	password   string
 	cipherName string
 }
@@ -37,7 +38,7 @@ func ShadowDial(id int, addressString *C.char) int {
 	goAddressString := C.GoString(addressString)
 	config := configs[id]
 
-	transport := shadow.NewShadowClient(config.password, config.cipherName)
+	transport := shadow.NewShadowClient(config.password, config.cipherName, proxy.Direct)
 	conn, err := transport.Dial(goAddressString)
 
 

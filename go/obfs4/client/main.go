@@ -1,10 +1,11 @@
 package main
+
 import "C"
 import (
 	"github.com/OperatorFoundation/shapeshifter-transports/transports/obfs4"
+	"golang.org/x/net/proxy"
 	"net"
 	"unsafe"
-	"golang.org/x/net/proxy"
 )
 
 var obfs4Clients = map[int]*obfs4.Obfs4Transport{}

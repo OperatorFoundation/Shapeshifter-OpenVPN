@@ -2,23 +2,29 @@ package main
 
 import "C"
 import (
+	"golang.org/x/net/proxy"
+	"net"
 	"unsafe"
 
-	"github.com/OperatorFoundation/shapeshifter-transports/transports/base"
-	"github.com/OperatorFoundation/shapeshifter-transports/transports/obfs4"
+	"github.com/OperatorFoundation/shapeshifter-transports/transports/meeklite"
 )
 
-var transports = map[int]base.Transport{}
-var listeners = map[int]base.TransportListener{}
-var conns = map[int]base.TransportConn{}
+var configs = map[int]meekConfig{}
+var conns = map[int]net.Conn{}
 var nextID = 0
 
-//export Obfs4_initialize_server
-func Obfs4_initialize_server(stateDir *C.char) (listenerKey int) {
-	goStateString := C.GoString(stateDir)
-	var transport base.Transport = obfs4.NewObfs4Server(goStateString)
-	transports[nextID] = transport
+type meekConfig struct {
+	url   string
+	front string
+}
 
+//export MeekliteInitializeServer
+func MeekliteInitializeServer(url *C.char, front *C.char) (listenerKey int) {
+	goUrl := C.GoString(url)
+	goFront := C.GoString(front)
+
+	config := meekConfig{goUrl, goFront}
+	configs[nextID] = config
 	// This is the return value
 	listenerKey = nextID
 
@@ -26,61 +32,56 @@ func Obfs4_initialize_server(stateDir *C.char) (listenerKey int) {
 	return
 }
 
-//export Obfs4_listen
-func Obfs4_listen(id int, address_string *C.char) {
-	goAddressString := C.GoString(address_string)
+//export MeekliteListen
+func MeekliteListen(id int, addressString *C.char) int {
+	goAddressString := C.GoString(addressString)
+	config := configs[id]
 
-	var transport = transports[id]
-	var listener = transport.Listen(goAddressString)
-	listeners[id] = listener
-}
+	transport := meeklite.NewMeekTransportWithFront(config.url, config.front, proxy.Direct)
+	conn := transport.Dial(goAddressString)
 
-//export Obfs4_accept
-func Obfs4_accept(id int) {
-	var listener = listeners[id]
-
-	conn, err := listener.TransportAccept()
-	if err != nil {
-		return
+	if conn == nil {
+		return 1
+	} else {
+		conns[id] = conn
+		return 0
 	}
-
-	conns[id] = conn
 }
 
-//export Obfs4_write
-func Obfs4_write(listener_id int, buffer unsafe.Pointer, buffer_length C.int) int {
-	var connection = conns[listener_id]
-	var bytesBuffer = C.GoBytes(buffer, buffer_length)
-	numberOfBytesWritten, error := connection.Write(bytesBuffer)
+//export MeekliteWrite
+func MeekliteWrite(clientId int, buffer unsafe.Pointer, bufferLength C.int) int {
+	var connection = conns[clientId]
+	var bytesBuffer = C.GoBytes(buffer, bufferLength)
+	numberOfBytesWritten, err := connection.Write(bytesBuffer)
 
-	if error != nil {
+	if err != nil {
 		return -1
 	} else {
 		return numberOfBytesWritten
 	}
 }
 
-//export Obfs4_read
-func Obfs4_read(listener_id int, buffer unsafe.Pointer, buffer_length C.int) int {
+//export MeekliteRead
+func MeekliteRead(clientId int, buffer unsafe.Pointer, bufferLength C.int) int {
 
-	var connection = conns[listener_id]
-	var bytesBuffer = C.GoBytes(buffer, buffer_length)
+	var connection = conns[clientId]
+	var bytesBuffer = C.GoBytes(buffer, bufferLength)
 
-	numberOfBytesRead, error := connection.Read(bytesBuffer)
+	numberOfBytesRead, err := connection.Read(bytesBuffer)
 
-	if error != nil {
+	if err != nil {
 		return -1
 	} else {
 		return numberOfBytesRead
 	}
 }
 
-//export Obfs4_close_connection
-func Obfs4_close_connection(listener_id int) {
+//export MeekliteCloseConnection
+func MeekliteCloseConnection(clientId int) {
 
-	var connection = conns[listener_id]
-	connection.Close()
-	delete(conns, listener_id)
+	var connection = conns[clientId]
+	_ = connection.Close()
+	delete(conns, clientId)
 }
 
 func main() {}
