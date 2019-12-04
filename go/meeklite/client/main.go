@@ -18,8 +18,8 @@ type meekConfig struct {
 	front string
 }
 
-//export MeekliteInitializeServer
-func MeekliteInitializeServer(url *C.char, front *C.char) (listenerKey int) {
+//export MeekliteInitializeClient
+func MeekliteInitializeClient(url *C.char, front *C.char) (listenerKey int) {
 	goUrl := C.GoString(url)
 	goFront := C.GoString(front)
 
@@ -32,8 +32,8 @@ func MeekliteInitializeServer(url *C.char, front *C.char) (listenerKey int) {
 	return
 }
 
-//export MeekliteListen
-func MeekliteListen(id int, addressString *C.char) int {
+//export MeekliteDial
+func MeekliteDial(id int, addressString *C.char) int {
 	goAddressString := C.GoString(addressString)
 	config := configs[id]
 
