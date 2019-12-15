@@ -5,23 +5,29 @@ import (
 	"net"
 	"unsafe"
 
-	"github.com/OperatorFoundation/shapeshifter-transports/transports/obfs4"
+	"github.com/OperatorFoundation/shapeshifter-transports/transports/meekserver"
 )
 
-var configs = map[int]obfs4ServerConfig{}
+var configs = map[int]meekserverConfig{}
 var listeners = map[int]net.Listener{}
 var conns = map[int]net.Conn{}
 var nextID = 0
 
-type obfs4ServerConfig struct{
-	stateDir  string
+type meekserverConfig struct {
+	disableTLS          bool
+	acmeEmail           string
+	acmeHostnamesCommas string
+	stateDir            string
 }
 
-//export Obfs4InitializeServer
-func Obfs4InitializeServer(stateDir *C.char) (listenerKey int) {
-	gostateDir := C.GoString(stateDir)
+//export meekserverInitializeServer
+func meekserverInitializeServer(disableTLS *C.char, acmeEmail *C.char, acmeHostnamesCommas *C.char, stateDir *C.char) (listenerKey int) {
+	goDisableTLS := C.GoString(disableTLS)
+	goAcmeEmail := C.GoString(acmeEmail)
+	goAcmeHostnamesCommas := C.GoString(acmeHostnamesCommas)
+	goStateDir := C.GoString(stateDir)
 
-	config := obfs4ServerConfig{gostateDir}
+	config := meekserverConfig{goDisableTLS, goAcmeEmail, goAcmeHostnamesCommas, goStateDir}
 	configs[nextID] = config
 
 	// This is the return value
@@ -31,18 +37,18 @@ func Obfs4InitializeServer(stateDir *C.char) (listenerKey int) {
 	return
 }
 
-//export Obfs4Listen
-func Obfs4Listen(id int, addressString *C.char) {
+//export meekserverListen
+func meekserverListen(id int, addressString *C.char) {
 	goAddressString := C.GoString(addressString)
 	config := configs[id]
 
-	transport, _ := obfs4.NewObfs4Server(config.stateDir)
+	transport := meekserver.NewMeekTransportServer(config.disableTLS, config.acmeEmail, config.acmeHostnamesCommas, config.stateDir)
 	listener := transport.Listen(goAddressString)
 	listeners[id] = listener
 }
 
-//export Obfs4Accept
-func Obfs4Accept(id int) {
+//export meekserverAccept
+func meekserverAccept(id int) {
 	var listener = listeners[id]
 
 	conn, err := listener.Accept()
@@ -53,7 +59,7 @@ func Obfs4Accept(id int) {
 	conns[id] = conn
 }
 
-//export Obfs4Write
+//export meekserverWrite
 func Obfs4Write(listenerId int, buffer unsafe.Pointer, bufferLength C.int) int {
 	var connection = conns[listenerId]
 	var bytesBuffer = C.GoBytes(buffer, bufferLength)
@@ -66,8 +72,8 @@ func Obfs4Write(listenerId int, buffer unsafe.Pointer, bufferLength C.int) int {
 	}
 }
 
-//export Obfs4Read
-func Obfs4Read(listenerId int, buffer unsafe.Pointer, bufferLength C.int) int {
+//export meekserverRead
+func meekserverRead(listenerId int, buffer unsafe.Pointer, bufferLength C.int) int {
 
 	var connection = conns[listenerId]
 	var bytesBuffer = C.GoBytes(buffer, bufferLength)
@@ -81,8 +87,8 @@ func Obfs4Read(listenerId int, buffer unsafe.Pointer, bufferLength C.int) int {
 	}
 }
 
-//export Obfs4CloseConnection
-func Obfs4CloseConnection(listenerId int) {
+//export meekserverCloseConnection
+func meekserverCloseConnection(listenerId int) {
 
 	var connection = conns[listenerId]
 	_ = connection.Close()
