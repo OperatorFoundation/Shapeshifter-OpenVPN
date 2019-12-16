@@ -16,7 +16,7 @@ var nextID = 0
 //export Obfs4InitializeServer
 func Obfs4InitializeServer(stateDir *C.char) (listenerKey int) {
 	goStateString := C.GoString(stateDir)
-	transports[nextID] = obfs4transport.NewObfs4Server(goStateString)
+	transports[nextID], _ = obfs4transport.NewObfs4Server(goStateString)
 
 	// This is the return value
 	listenerKey = nextID
