@@ -22,7 +22,7 @@ type meekserverConfig struct {
 
 //export meekserverInitializeServer
 func meekserverInitializeServer(disableTLS *C.char, acmeEmail *C.char, acmeHostnamesCommas *C.char, stateDir *C.char) (listenerKey int) {
-	goDisableTLS := C.GoString(disableTLS)
+	goDisableTLS := disableTLS.First()
 	goAcmeEmail := C.GoString(acmeEmail)
 	goAcmeHostnamesCommas := C.GoString(acmeHostnamesCommas)
 	goStateDir := C.GoString(stateDir)
