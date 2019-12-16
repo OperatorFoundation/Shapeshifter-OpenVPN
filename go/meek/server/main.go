@@ -60,7 +60,7 @@ func meekserverAccept(id int) {
 }
 
 //export meekserverWrite
-func Obfs4Write(listenerId int, buffer unsafe.Pointer, bufferLength C.int) int {
+func meekserverWrite(listenerId int, buffer unsafe.Pointer, bufferLength C.int) int {
 	var connection = conns[listenerId]
 	var bytesBuffer = C.GoBytes(buffer, bufferLength)
 	numberOfBytesWritten, err := connection.Write(bytesBuffer)
