@@ -5,13 +5,17 @@ import (
 	"net"
 	"unsafe"
 
-	obfs4transport "github.com/OperatorFoundation/shapeshifter-transports/transports/obfs4"
+	"github.com/OperatorFoundation/shapeshifter-transports/transports/obfs4"
 )
 
-var transports = map[int]*obfs4transport.Obfs4Transport{}
+var configs = map[int]obfs4ServerConfig{}
 var listeners = map[int]net.Listener{}
 var conns = map[int]net.Conn{}
 var nextID = 0
+
+type obfs4ServerConfig struct{
+	stateDir  string
+}
 
 //export Obfs4InitializeServer
 func Obfs4InitializeServer(stateDir *C.char) (listenerKey int) {
@@ -28,8 +32,9 @@ func Obfs4InitializeServer(stateDir *C.char) (listenerKey int) {
 //export Obfs4Listen
 func Obfs4Listen(id int, addressString *C.char) {
 	goAddressString := C.GoString(addressString)
+	config := configs[id]
 
-	transport := transports[id]
+	transport, _ := obfs4.NewObfs4Server(config.stateDir)
 	listener := transport.Listen(goAddressString)
 	listeners[id] = listener
 }

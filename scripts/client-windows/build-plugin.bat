@@ -14,6 +14,8 @@ copy "%GOPATH%\src\%WINBASE%\go\%1\client\%1.h" "plugins\%1\client-windows\inclu
 copy "%GOPATH%\src\%WINBASE%\go\%1\client\%1.lib" "plugins\%1\client-windows\lib\shapeshifter-%1-go.lib"
 
 cd "plugins\%1\client-windows"
+mkdir lib
+
 
 REM Run cmake .; make -- we use CLion for this, with the MinGW toolchain
 REM Copy resulting cmake-build-debug-mingw/libshapeshifter-%1.dll to openvpn-build/
