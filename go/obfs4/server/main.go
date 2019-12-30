@@ -19,9 +19,8 @@ type obfs4ServerConfig struct{
 
 //export Obfs4InitializeServer
 func Obfs4InitializeServer(stateDir *C.char) (listenerKey int) {
-	gostateDir := C.GoString(stateDir)
-
-	config := obfs4ServerConfig{gostateDir}
+	goStateString := C.GoString(stateDir)
+	config := obfs4ServerConfig{goStateString}
 	configs[nextID] = config
 
 	// This is the return value
