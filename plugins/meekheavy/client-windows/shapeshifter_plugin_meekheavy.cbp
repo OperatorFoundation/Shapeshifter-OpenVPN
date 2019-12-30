@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="shapeshifter_plugin_meekheavy"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/TDM-GCC-64/bin/mingw32-make.exe -f &quot;C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/TDM-GCC-64/bin/mingw32-make.exe -f &quot;C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/TDM-GCC-64/bin/mingw32-make.exe -f &quot;C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/TDM-GCC-64/bin/mingw32-make.exe -f &quot;C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="shapeshifter_plugin_meekheavy">
+				<Option output="C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/libshapeshifter_plugin_meekheavy.dll" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/include"/>
+					<Add directory="C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/src"/>
+					<Add directory="C:/TDM-GCC-64/bin/../lib/gcc/x86_64-w64-mingw32/5.1.0/include"/>
+					<Add directory="C:/TDM-GCC-64/bin/../lib/gcc/x86_64-w64-mingw32/5.1.0/../../../../include"/>
+					<Add directory="C:/TDM-GCC-64/bin/../lib/gcc/x86_64-w64-mingw32/5.1.0/include-fixed"/>
+					<Add directory="C:/TDM-GCC-64/bin/../lib/gcc/x86_64-w64-mingw32/5.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/TDM-GCC-64/bin/mingw32-make.exe -f &quot;C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/Makefile&quot;  VERBOSE=1 shapeshifter_plugin_meekheavy"/>
+					<CompileFile command="C:/TDM-GCC-64/bin/mingw32-make.exe -f &quot;C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/TDM-GCC-64/bin/mingw32-make.exe -f &quot;C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/TDM-GCC-64/bin/mingw32-make.exe -f &quot;C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="shapeshifter_plugin_meekheavy/fast">
+				<Option output="C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/libshapeshifter_plugin_meekheavy.dll" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/include"/>
+					<Add directory="C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/src"/>
+					<Add directory="C:/TDM-GCC-64/bin/../lib/gcc/x86_64-w64-mingw32/5.1.0/include"/>
+					<Add directory="C:/TDM-GCC-64/bin/../lib/gcc/x86_64-w64-mingw32/5.1.0/../../../../include"/>
+					<Add directory="C:/TDM-GCC-64/bin/../lib/gcc/x86_64-w64-mingw32/5.1.0/include-fixed"/>
+					<Add directory="C:/TDM-GCC-64/bin/../lib/gcc/x86_64-w64-mingw32/5.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/TDM-GCC-64/bin/mingw32-make.exe -f &quot;C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/Makefile&quot;  VERBOSE=1 shapeshifter_plugin_meekheavy/fast"/>
+					<CompileFile command="C:/TDM-GCC-64/bin/mingw32-make.exe -f &quot;C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/TDM-GCC-64/bin/mingw32-make.exe -f &quot;C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/TDM-GCC-64/bin/mingw32-make.exe -f &quot;C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/TDM-GCC-64/bin/mingw32-make.exe -f &quot;C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/TDM-GCC-64/bin/mingw32-make.exe -f &quot;C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/TDM-GCC-64/bin/mingw32-make.exe -f &quot;C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/TDM-GCC-64/bin/mingw32-make.exe -f &quot;C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/TDM-GCC-64/bin/mingw32-make.exe -f &quot;C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="C:/TDM-GCC-64/bin/mingw32-make.exe -f &quot;C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/TDM-GCC-64/bin/mingw32-make.exe -f &quot;C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/TDM-GCC-64/bin/mingw32-make.exe -f &quot;C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/src/shapeshifter-meekheavy-win32.c">
+			<Option target="shapeshifter_plugin_meekheavy"/>
+		</Unit>
+		<Unit filename="C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/src/shapeshifter-meekheavy.c">
+			<Option target="shapeshifter_plugin_meekheavy"/>
+		</Unit>
+		<Unit filename="C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/src/shapeshifter-meekheavy.h">
+			<Option target="shapeshifter_plugin_meekheavy"/>
+		</Unit>
+		<Unit filename="C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
