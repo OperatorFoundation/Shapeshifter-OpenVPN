@@ -14,256 +14,50 @@
 #include "shapeshifter-meekheavy.h"
 
 
+size_t curlWriteBackFunction(void *contents, size_t size, size_t nmemb, void *userp)
+{
+
+    /*
+     * This is the function curl calls when results are returned, we'll also need to pass it the handle and context so it knows
+     * which connection the data is for and stashes it in the appropriate chunk
+     */
 
 
+    long httpResponseCode = 0;
+    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpResponseCode);
+    size_t realsize = size * nmemb;
+    if (httpResponseCode == 200L) { //only copy data into buffer if the http result code is ok (200)
 
+        //we will add the data to the buffer, not overwrite
+        struct MemoryStruct *mem = (struct MemoryStruct *) userp; //recast *mem to access user structure since it was passed as a void
 
+        char *ptr = realloc(mem->memory, mem->size + realsize + 1); //resize and copy existing buffer into a newone with more space to handle new data
+        if (ptr == NULL) {
+            /* out of memory! */
+            ///////convert this printf to a log error
+            printf("not enough memory (realloc returned NULL)\n");
+            return 0; //tell curl there was a problem
+        }
 
-//CURL *curl;
-//CURLcode res;
-//
-//struct MemoryStruct { //define structure
-//    char *memory;
-//    size_t size;
-//};
-//
-//struct MemoryStruct chunk; // = malloc(sizeof(MemoryStruct)); //create instance of structure to store return data
-//struct MemoryStruct dataToSend;
-//struct MemoryStruct dataReceived;
-//
-//
-//int main() {
-//    dataToSend.memory = malloc(15);
-//    dataToSend.size = 15;
-//
-//    dataReceived.memory = malloc(65536);
-//    dataReceived.size = 65536;
-//
-//    dataToSend.memory = "data data data";
-//
-//    uint8_t initResult = 0;
-//    uint8_t writeResult = 0;
-//    uint32_t readResult = 0;
-//    uint8_t closeResult = 0;
-//
-//    char *URL = "https://only.esni.defo.ie";
-//    char *serverESNI = "only.esni.defo.ie";
-//    char *coverESNI = "cover.defo.ie";
-//    char *keyESNI = "/wElACniACQAHQAg5+fW92VqGCbFBrPYbbB8is00bfpVL0aUNAObapQg/z0AAhMBAQQAAAAAXgpnqQAAAABeCnzBAAA=";
-//
-//    //uint8_t initESNI(char *URL, char *serverESNI, char *coverESNI, char *keyESNI )
-//    initResult = initESNI(URL,serverESNI,coverESNI,keyESNI);
-//    printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Init Result: %i\n", initResult);
-//
-//    //uint8_t writeESNI(char *data, size_t *len)
-//    writeResult = writeESNI(dataToSend.memory, (size_t *) dataToSend.size);
-//    printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Write Result: %i\n", writeResult);
-//
-//    //uint32_t readESNI(char *returnBuffer, const size_t *requestedSize)
-//    readResult = readESNI(dataReceived.memory, dataReceived.size);
-//    printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Read Result: %i\n", readResult);
-//    printf("<><><><> data received <><><><>\n%s", dataReceived.memory);
-//
-//    //uint8_t closeESNI()
-//    closeResult = closeESNI();
-//    printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Close Result: %i\n", closeResult);
-//
-//
-//}
-//
-//
-//uint8_t initESNI(char *URL, char *serverESNI, char *coverESNI, char *keyESNI )
-//{
-//    //setup esni connection, pass vars to function, return 0 on success 1 on fail
-//
-//    chunk.memory = malloc(1);  /* will be grown as needed by the realloc  in curlWriteFunction*/
-//    //chunk.size = malloc(sizeof(size_t));    /* no data at this point */
-//    chunk.size = 0;
-//
-//    curl_global_init(CURL_GLOBAL_DEFAULT);
-//
-//    curl = curl_easy_init();
-//    if (curl) {
-//        //curl_easy_setopt();
-//
-//        curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-//        curl_easy_setopt(curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4); //force ipv4, ipv6 seems to not work on test server 2019.12.18
-//        curl_easy_setopt(curl, CURLOPT_URL, URL);
-//        curl_easy_setopt(curl, CURLOPT_ESNI_STATUS, CURLESNI_ENABLE | CURLESNI_STRICT);
-//        curl_easy_setopt(curl, CURLOPT_ESNI_SERVER, serverESNI);
-//        curl_easy_setopt(curl, CURLOPT_ESNI_COVER, coverESNI);
-//        curl_easy_setopt(curl, CURLOPT_ESNI_ASCIIRR,keyESNI);
-//        curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *) &chunk);
-//        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &curlWriteFunction);
-//        curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, -1L);
-//
-//        char *sessionID = (char *) malloc((16 * 2) + 1);
-//
-//        int resultCode = sessionIDgen(sessionID);
-//
-//        if (resultCode == 0) {
-//            //string2hexString(randomBuffer, hexRandomBuffer, 64);
-//            printf("SessionID: %s\n", sessionID);
-//
-//            //return 0;
-//        } else {
-//            printf("Not enough random bytes for PRNG");
-//            return 1;
-//        }
-//        char sessionIDheader[(16 * 2) + 1 + 14] = "X-Session-Id: ";
-//        strcat(sessionIDheader, sessionID);
-//        printf("sessionheader::  %s\n", sessionIDheader);
-//        struct curl_slist *list = NULL;
-//        list = curl_slist_append(list, "User-Agent: ");
-//        list = curl_slist_append(list, sessionIDheader);
-//        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, list);
-//
-//#ifdef SKIP_PEER_VERIFICATION
-//        /*
-//             * If you want to connect to a site who isn't using a certificate that is
-//             * signed by one of the certs in the CA bundle you have, you can skip the
-//             * verification of the server's certificate. This makes the connection
-//             * A LOT LESS SECURE.
-//             *
-//             * If you have a CA cert for the server stored someplace else than in the
-//             * default bundle, then the CURLOPT_CAPATH option might come handy for
-//             * you.
-//             */
-//            curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
-//#endif
-//
-//#ifdef SKIP_HOSTNAME_VERIFICATION
-//        /*
-//             * If the site you're connecting to uses a different host name that what
-//             * they have mentioned in their server certificate's commonName (or
-//             * subjectAltName) fields, libcurl will refuse to connect. You can skip
-//             * this check, but this will make the connection less secure.
-//             */
-//            curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
-//#endif
-//
-//
-//        return 0;
-//    }
-//    return 1;
-//
-//}
-//
-//
-//uint8_t writeESNI(char *data, size_t *len)
-//{
-//    //perform the ESNI connection, send data and receive response into buffer
-//    //if response code is not 200, don't buffer the data
-//    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "data data data meh");
-//
-//    long httpResponseCode = 0;
-//    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpResponseCode);
-//
-//    /* Perform the request, res will get the return code */
-//    res = curl_easy_perform(curl);
-//    /* Check for errors */
-//    if(res != CURLE_OK) {
-//        fprintf(stderr, "curl_easy_perform() failed: %s\n",
-//                curl_easy_strerror(res));
-//    }else{
-//        printf("----THE_RESULTS----\n");
-//        if (httpResponseCode != 200L){
-//            //clear buffered data in struct chunk.memory
-//        }
-//        printf("%lu bytes retrieved\n", (unsigned long)chunk.size);
-//        printf("PageData: \n%s", (char*)chunk.memory);
-//    }
-//
-//
-//}
-//
-//
-//uint32_t readESNI(char *returnBuffer,  size_t requestedSize)
-//{
-//    //copy requested number of bytes of data from our buffer up to our buffer size, into the passed buffer,
-//    // and then clear the returned data from our buffer
-//    //return the number of bytes we actually copied into the returnBuffer
-//    size_t bytesCopied = 0;
-//
-//    if (chunk.size <= requestedSize) {
-//        //requested the same or more bytes than we have so copy it all
-//        bytesCopied = chunk.size;
-//        memcpy(returnBuffer, chunk.memory, chunk.size);
-//
-//        //manage our buffer
-//        //we copied the whole buffer, so just clear it
-//        chunk.memory = realloc(chunk.memory, 1);
-//        chunk.memory = "\0"; //only handy for debug printing
-//        chunk.size = 0UL;    /* no data at this point */
-//    }
-//
-//    if (chunk.size > requestedSize){
-//        //requested less than we have so only send back what they want
-//        bytesCopied = requestedSize;
-//        memcpy(returnBuffer, chunk.memory, requestedSize);
-//
-//        //manage our buffer
-//        //we only returned part of our buffer so remove the part that was returned
-//        memmove(chunk.memory, &chunk.memory[requestedSize], (chunk.size - requestedSize));
-//        chunk.size = chunk.size - requestedSize;
-//    }
-//
-//    return bytesCopied;
-//
-//}
-//
-//
-//uint8_t closeESNI()
-//{
-//    //close connections and free memory
-//
-//    /* always cleanup after yourself */
-//    //free(chunk.memory); chunk != NULL &&
-//
-//    if( chunk.memory != NULL) {
-//        printf("not null");
-//        free(chunk.memory);
-//    }
-//
-//    curl_easy_cleanup(curl);
-//    curl_global_cleanup();
-//
-//    return 0;
-//}
-//
-//
-//size_t curlWriteFunction(void *contents, size_t size, size_t nmemb, void *userp)
-//{
-//    long httpResponseCode = 0;
-//    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpResponseCode);
-//    size_t realsize = size * nmemb;
-//    if (httpResponseCode == 200L) { //only copy data into buffer if the http result code is ok (200)
-//
-//        //we will add the data to the buffer, not overwrite
-//        struct MemoryStruct *mem = (struct MemoryStruct *) userp; //recast *mem to access user structure since it was passed as a void
-//
-//        char *ptr = realloc(mem->memory, mem->size + realsize + 1); //resize and copy existing buffer into a newone with more space to handle new data
-//        if (ptr == NULL) {
-//            /* out of memory! */
-//            printf("not enough memory (realloc returned NULL)\n");
-//            return 0; //tell curl there was a problem
-//        }
-//
-//        mem->memory = ptr;
-//        memcpy(&(mem->memory[mem->size]), contents, realsize); //add new content to buffer
-//        mem->size += realsize;
-//        mem->memory[mem->size] = 0; //not needed since we'll be handling data as binary and not printable characters or strings
-//
-//    }
-//    //always return the size sent even if it was a non 200 code so that we don't signal an error
-//    //see https://curl.haxx.se/libcurl/c/CURLOPT_WRITEFUNCTION.html
-//    return realsize;
-//
-//}
+        mem->memory = ptr;
+        memcpy(&(mem->memory[mem->size]), contents, realsize); //add new content to buffer
+        mem->size += realsize;
+        mem->memory[mem->size] = 0; //not needed since we'll be handling data as binary and not printable characters or strings
+
+    }
+    //always return the size sent even if it was a non 200 code so that we don't signal an error
+    //see https://curl.haxx.se/libcurl/c/CURLOPT_WRITEFUNCTION.html
+    return realsize;
+
+}
 
 
 void string2hexString(uint8_t *input, char *output, uint8_t length)
 {
+    /*
+     * this function converts a character string's values into their hex value as a string
+     * it's used to create the session ID
+     */
     int loop;
     int i;
 
@@ -283,6 +77,10 @@ void string2hexString(uint8_t *input, char *output, uint8_t length)
 
 int sessionIDgen(char *sessionID)
 {
+    /*
+     * this function uses openssl to generate a random number which is hashed and then converted to a string
+     * to use as a session ID
+     */
     uint8_t *rnd = (uint8_t *)malloc(64 );
 
     unsigned char hash[SHA256_DIGEST_LENGTH];
@@ -313,6 +111,7 @@ static inline bool is_invalid_handle(HANDLE h)
 
 struct shapeshifter_meeklite_socket_win32
 {
+    //generic catchall state structure
     struct openvpn_vsocket_handle handle;
     struct shapeshifter_meeklite_context *ctx;
 
@@ -354,8 +153,30 @@ static openvpn_vsocket_handle_t shapeshifter_meeklite_win32_bind(void *plugin_ha
     sock->handle.vtab = &shapeshifter_meeklite_socket_vtab;
     sock->ctx = (struct shapeshifter_meeklite_context *) plugin_handle;
 
+
+    //generate session id
+    char *sessionID = (char *) malloc((16 * 2) + 1);
+
+    int resultCode = sessionIDgen(sessionID);
+
+    if (resultCode == 0) {
+        shapeshifter_meeklite_log(((struct shapeshifter_meeklite_socket_win32 *)handle)->ctx, PLOG_DEBUG, "SessionID created: %s", sessionID);
+
+    } else {
+        shapeshifter_meeklite_log((struct shapeshifter_meeklite_context *) plugin_handle, PLOG_ERR, "Not enough random bytes for PRNG");
+        free(sessionID);
+        goto error;
+    }
+    char sessionIDheader[(16 * 2) + 1 + 14] = "X-Session-Id: ";
+    strcat(sessionIDheader, sessionID);
+    //printf("sessionheader::  %s\n", sessionIDheader);
+    sock->ctx->sessionIDHeader = sessionIDheader;
+    free(sessionID);
+
+
+
     // Create an meeklite client.
-//    sock->client_id = MeekliteInitializeClient(sock->ctx->url, sock->ctx->front);
+    //sock->client_id = MeekliteInitializeClient(sock->ctx->url, sock->ctx->front);
 
     /* See above: write is ready when idle, read is not-ready when idle. */
     sock->completion_events.read = CreateEvent(NULL, TRUE, FALSE, NULL);
@@ -364,9 +185,10 @@ static openvpn_vsocket_handle_t shapeshifter_meeklite_win32_bind(void *plugin_ha
     if (is_invalid_handle(sock->completion_events.read) || is_invalid_handle(sock->completion_events.write))
         goto error;
 
-    struct sockaddr_in *addr_in = (struct sockaddr_in *)addr;
-//    GoInt dial_result = MeekliteDial(sock->client_id, inet_ntoa(addr_in->sin_addr));
-//
+    //dial not needed for our meekheavy
+    //struct sockaddr_in *addr_in = (struct sockaddr_in *)addr;
+    //GoInt dial_result = MeekliteDial(sock->client_id, inet_ntoa(addr_in->sin_addr));
+
 //    if (dial_result != 0)
 //        goto error;
 
@@ -381,6 +203,7 @@ static openvpn_vsocket_handle_t shapeshifter_meeklite_win32_bind(void *plugin_ha
 
 static void shapeshifter_meeklite_win32_request_event(openvpn_vsocket_handle_t handle, openvpn_vsocket_event_set_handle_t event_set, unsigned rwflags)
 {
+    ///////no change
     struct shapeshifter_meeklite_socket_win32 *sock = (struct shapeshifter_meeklite_socket_win32 *)handle;
     shapeshifter_meeklite_log(((struct shapeshifter_meeklite_socket_win32 *)handle)->ctx, PLOG_DEBUG, "request-event: %d", rwflags);
     ((struct shapeshifter_meeklite_socket_win32 *)handle)->last_rwflags = 0;
@@ -393,6 +216,7 @@ static void shapeshifter_meeklite_win32_request_event(openvpn_vsocket_handle_t h
 
 static bool shapeshifter_meeklite_win32_update_event(openvpn_vsocket_handle_t handle, void *arg, unsigned rwflags)
 {
+    ///////no change
     shapeshifter_meeklite_log(((struct shapeshifter_meeklite_socket_win32 *) handle)->ctx, PLOG_DEBUG,
                               "update-event: %p, %p, %d", handle, arg, rwflags);
     if (arg != handle) {
@@ -405,6 +229,7 @@ static bool shapeshifter_meeklite_win32_update_event(openvpn_vsocket_handle_t ha
 
 static unsigned shapeshifter_meeklite_win32_pump(openvpn_vsocket_handle_t handle)
 {
+    ///////no change
     struct shapeshifter_meeklite_socket_win32 *sock = (struct shapeshifter_meeklite_socket_win32 *)handle;
     unsigned result = 0;
 
@@ -423,38 +248,145 @@ static unsigned shapeshifter_meeklite_win32_pump(openvpn_vsocket_handle_t handle
 
 static ssize_t shapeshifter_meeklite_win32_recvfrom(openvpn_vsocket_handle_t handle, void *buf, size_t len, struct sockaddr *addr, openvpn_vsocket_socklen_t *addrlen)
 {
+    ///////do this
+    ///////need to add error handling if there are issues with the memcpy and memmove and realloc stuff
+
+
     struct shapeshifter_meeklite_socket_win32 *sock = (struct shapeshifter_meeklite_socket_win32 *)handle;
     int client_id = sock->client_id;
-//    GoInt number_of_bytes_read = MeekliteRead(client_id, (void *)buf, (int)len);
-//
-//    if (number_of_bytes_read < 0)
-//    {
-//        return -1;
-//    }
+    //GoInt number_of_bytes_read = MeekliteRead(client_id, (void *)buf, (int)len);
+
+    //copy requested number of bytes of data from our buffer up to our buffer size, into the passed buffer,
+    // and then clear the returned data from our buffer
+    //return the number of bytes we actually copied into the returnBuffer
+    size_t bytesCopied = 0;
+
+    ///////need to make chunk the context version, and add memory error handling for memcpy and realloc
+
+    if (chunk.size <= requestedSize) {
+        //requested the same or more bytes than we have so copy it all
+        bytesCopied = chunk.size;
+        memcpy(returnBuffer, chunk.memory, chunk.size);
+
+        //manage our buffer
+        //we copied the whole buffer, so just clear it
+        chunk.memory = realloc(chunk.memory, 1);
+        chunk.memory = "\0"; //only handy for debug printing
+        chunk.size = 0UL;    /* no data at this point */
+    }
+
+    if (chunk.size > requestedSize){
+        //requested less than we have so only send back what they want
+
+
+        memcpy(returnBuffer, chunk.memory, requestedSize);
+
+        //manage our buffer
+        //we only returned part of our buffer so remove the part that was returned
+        memmove(chunk.memory, &chunk.memory[requestedSize], (chunk.size - requestedSize));
+        chunk.size = chunk.size - requestedSize;
+        bytesCopied = requestedSize;
+    }
+
+    if (bytesCopied < 0)
+    {
+        return -1;
+    }
 
     ResetEvent(sock->completion_events.read);
 
-//    return number_of_bytes_read;
+    return bytesCopied;
     return -1;
 }
 
-static ssize_t shapeshifter_meeklite_win32_sendto(openvpn_vsocket_handle_t handle, const void *buf, size_t len, const struct sockaddr *addr, openvpn_vsocket_socklen_t addrlen)
+static ssize_t shapeshifter_meeklite_win32_sendto(openvpn_vsocket_handle_t handle,
+        const void *buf, size_t len, const struct sockaddr *addr, openvpn_vsocket_socklen_t addrlen)
 {
+    ///////do this
+    /////// this is not fully merged
+
     struct shapeshifter_meeklite_socket_win32 *sock = (struct shapeshifter_meeklite_socket_win32 *)handle;
+
+
+    CURL *curl;
+    CURLcode res;
+    long httpResponseCode = 0;
+
+    ///////This chunk and the following instances will need to point to the correct context chunk, this also gets passed to the writebackfunction to load data into it
+    chunk.memory = malloc(1);  /* will be grown as needed by the realloc  in curlWriteFunction*/
+    //chunk.size = malloc(sizeof(size_t));    /* no data at this point */
+    chunk.size = 0;
+
+    curl_global_init(CURL_GLOBAL_DEFAULT);
+
+    curl = curl_easy_init();
+    if (curl) {
+        //curl_easy_setopt();
+
+        curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+        curl_easy_setopt(curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4); //force ipv4, ipv6 seems to not work on test server 2019.12.18
+        curl_easy_setopt(curl, CURLOPT_URL, sock->ctx->URL);
+        curl_easy_setopt(curl, CURLOPT_ESNI_STATUS, CURLESNI_ENABLE | CURLESNI_STRICT);
+        curl_easy_setopt(curl, CURLOPT_ESNI_SERVER, sock->ctx->serverESNI);
+        curl_easy_setopt(curl, CURLOPT_ESNI_COVER, sock->ctx->coverESNI);
+        curl_easy_setopt(curl, CURLOPT_ESNI_ASCIIRR, sock->ctx->keyESNI);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *) &chunk);         ///////This &chunk will need to point to the correct context chunk, this also gets passed to the writebackfunction to load data into it
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &curlWriteBackFunction);
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, -1L);
+
+
+        struct curl_slist *list = NULL;
+        list = curl_slist_append(list, "User-Agent: ");
+        list = curl_slist_append(list, sock->ctx->sessionIDHeader);
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, list);
+
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "data data data meh"); ///////this needs to be changed to a variable
+
+        /* Perform the request, res will get the return code */
+        res = curl_easy_perform(curl);
+
+        /* Check for errors */
+        if(res != CURLE_OK) {
+            ///////convert to a log error message
+            fprintf(stderr, "curl_easy_perform() failed: %s\n",curl_easy_strerror(res));
+        }else{
+
+            curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpResponseCode);
+            if (httpResponseCode != 200L){
+                ///////clear buffered data in struct chunk.memory ?
+            }
+
+            ///////convert to a log debug message
+            printf("----THE_RESULTS----\n");
+            printf("%lu bytes retrieved\n", (unsigned long)chunk.size);
+            printf("PageData: \n%s", (char*)chunk.memory);
+        }
+        curl_easy_cleanup(curl);
+        curl_global_cleanup();
+        //return 0;
+
+
+    }
+    //return 1;
+
+
+
+
+    ///////this code needs to be merged with the above code
     int client_id = sock->client_id;
-//    GoInt number_of_characters_sent = MeekliteWrite(client_id, (void *)buf, (int)len);
-//
-//    if (number_of_characters_sent < 0)
-//    {
-//        goto error;
-//    }
+    GoInt number_of_characters_sent = MeekliteWrite(client_id, (void *)buf, (int)len);
+
+    if (number_of_characters_sent < 0)
+    {
+        goto error;
+    }
 
     SetEvent(sock->completion_events.write);
 
-//    shapeshifter_meeklite_log(((struct shapeshifter_meeklite_socket_win32 *) handle)->ctx, PLOG_DEBUG, "sendto(%d) -> %d", (int)len, (int)number_of_characters_sent);
+    shapeshifter_meeklite_log(((struct shapeshifter_meeklite_socket_win32 *) handle)->ctx, PLOG_DEBUG, "sendto(%d) -> %d", (int)len, (int)number_of_characters_sent);
 
-    //    return number_of_characters_sent;
-    return -1;
+    return number_of_characters_sent;
+   // return -1;
 
     error:
     return -1;
@@ -462,6 +394,8 @@ static ssize_t shapeshifter_meeklite_win32_sendto(openvpn_vsocket_handle_t handl
 
 static void shapeshifter_meeklite_win32_close(openvpn_vsocket_handle_t handle)
 {
+    ///////do this
+    ///////not sure what to add here
     free_socket((struct shapeshifter_meeklite_socket_win32 *) handle);
 }
 
@@ -504,6 +438,10 @@ shapeshifter_meeklite_log(struct shapeshifter_meeklite_context *ctx, openvpn_plu
 
 OPENVPN_EXPORT int openvpn_plugin_open_v3(int version, struct openvpn_plugin_args_open_in const *args, struct openvpn_plugin_args_open_return *out)
 {
+    ///////do this
+    ///////not sure what to add/do here
+
+
     struct shapeshifter_meeklite_context *context;
     context = (struct shapeshifter_meeklite_context *) calloc(1, sizeof(struct shapeshifter_meeklite_context));
     context->url = (char *)args->argv[1];
