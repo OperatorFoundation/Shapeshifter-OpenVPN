@@ -8,10 +8,11 @@ include_directories(src)
 
 add_library(shapeshifter_plugin_meekheavy SHARED
         src/shapeshifter-meekheavy-win32.c
-        src/shapeshifter-meekheavy.c)
+        src/shapeshifter-meekheavy.c
+        src/libmeekheavy.c)
 
 find_library(CURLLIB NAMES libcurl.a libcurl HINTS lib)
-find_library(SSLLIB NAMES libssl.a libssl HINTS lib)
-find_library(CRYPTOLIB NAMES libcrypto.a libcrypto HINTS lib)
+find_library(SSLLIB NAMES libssl.dll.a libssl HINTS lib)
+find_library(CRYPTOLIB NAMES libcrypto.dll.a libcrypto HINTS lib)
 
 target_link_libraries(shapeshifter_plugin_meekheavy ${CURLLIB} ${SSLLIB} ${CRYPTOLIB} wsock32 ws2_32 Winmm)

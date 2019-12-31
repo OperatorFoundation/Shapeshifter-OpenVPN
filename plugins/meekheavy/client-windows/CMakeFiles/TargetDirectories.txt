@@ -1,3 +1,0 @@
-C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/CMakeFiles/shapeshifter_plugin_meekheavy.dir
-C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/CMakeFiles/edit_cache.dir
-C:/cygwin64/home/brand/Shapeshifter-OpenVPN/plugins/meekheavy/client-windows/CMakeFiles/rebuild_cache.dir
