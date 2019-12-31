@@ -5,13 +5,13 @@
 #include <stdbool.h>
 #include "openvpn/openvpn-plugin.h"
 #include "openvpn/openvpn-vsocket.h"
-#include "shapeshifter-shadow-go.h"
+#include "shapeshifter-meek-go.h"
 #include "shapeshifter-meek.h"
 
-struct openvpn_vsocket_vtab shapeshifter_shadow_socket_vtab = { NULL };
+struct openvpn_vsocket_vtab shapeshifter_meek_socket_vtab = { NULL };
 
 static void
-free_context(struct shapeshifter_shadow_context *context)
+free_context(struct shapeshifter_meekserver_context *context)
 {
     if (!context)
         return;
@@ -19,11 +19,11 @@ free_context(struct shapeshifter_shadow_context *context)
 }
 
 void
-shapeshifter_shadow_log(struct shapeshifter_shadow_context *ctx, openvpn_plugin_log_flags_t flags, const char *fmt, ...)
+shapeshifter_meek_log(struct shapeshifter_meekserver_context *ctx, openvpn_plugin_log_flags_t flags, const char *fmt, ...)
 {
     va_list va;
     va_start(va, fmt);
-    ctx->global_vtab->plugin_vlog(flags, shapeshifter_shadow_PLUGIN_NAME, fmt, va);
+    ctx->global_vtab->plugin_vlog(flags, shapeshifter_meek_PLUGIN_NAME, fmt, va);
     va_end(va);
 }
 
@@ -31,10 +31,12 @@ shapeshifter_shadow_log(struct shapeshifter_shadow_context *ctx, openvpn_plugin_
 
 OPENVPN_EXPORT int openvpn_plugin_open_v3(int version, struct openvpn_plugin_args_open_in const *args, struct openvpn_plugin_args_open_return *out)
 {
-    struct shapeshifter_shadow_context *context;
-    context = (struct shapeshifter_shadow_context *) calloc(1, sizeof(struct shapeshifter_shadow_context));
-    context->password = (char *)args->argv[1];
-    context->cipherName = (char *)args->argv[2];
+    struct shapeshifter_meekserver_context *context;
+    context = (struct shapeshifter_meekserver_context *) calloc(1, sizeof(struct shapeshifter_meekserver_context));
+    context->disableTLS = (char)args->argv[1];
+    context->acmeEmail = (char *)args->argv[2];
+    context->acmeHostnamesCommas = (char *)args->argv[3];
+    context->stateDir = (char *)args->argv[4];
 
     if (!context)
         return OPENVPN_PLUGIN_FUNC_ERROR;
@@ -42,7 +44,7 @@ OPENVPN_EXPORT int openvpn_plugin_open_v3(int version, struct openvpn_plugin_arg
     context->global_vtab = args->callbacks;
     
     // Sets up the VTable, useful stuff
-    shapeshifter_shadow_initialize_socket_vtab();
+    shapeshifter_meek_initialize_socket_vtab();
 
     // Tells openVPN what events we want the plugin to handle
     out->type_mask = OPENVPN_PLUGIN_MASK(OPENVPN_PLUGIN_SOCKET_INTERCEPT);
@@ -56,7 +58,7 @@ OPENVPN_EXPORT int openvpn_plugin_open_v3(int version, struct openvpn_plugin_arg
 OPENVPN_EXPORT void
 openvpn_plugin_close_v1(openvpn_plugin_handle_t handle)
 {
-    free_context((struct shapeshifter_shadow_context *) handle);
+    free_context((struct shapeshifter_meekserver_context *) handle);
 }
 
 OPENVPN_EXPORT int
@@ -76,10 +78,10 @@ openvpn_plugin_get_vtab_v1(int selector, size_t *size_out)
     switch (selector)
     {
         case OPENVPN_VTAB_SOCKET_INTERCEPT_SOCKET_V1:
-            if (shapeshifter_shadow_socket_vtab.bind == NULL)
+            if (shapeshifter_meek_socket_vtab.bind == NULL)
                 return NULL;
             *size_out = sizeof(struct openvpn_vsocket_vtab);
-            return &shapeshifter_shadow_socket_vtab;
+            return &shapeshifter_meek_socket_vtab;
 
         default:
             return NULL;
