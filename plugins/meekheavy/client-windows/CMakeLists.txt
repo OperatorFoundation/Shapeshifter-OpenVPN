@@ -7,7 +7,6 @@ include_directories(include)
 include_directories(src)
 
 add_library(shapeshifter_plugin_meekheavy SHARED
-        src/shapeshifter-meekheavy-win32.c
         src/shapeshifter-meekheavy.c
         src/libmeekheavy.c)
 
